@@ -7,6 +7,7 @@
 #include "FunctionLibrary/Mw_BFL_Widget.h"
 #include "Items/Mw_ItemTags.h"
 #include "Items/Assets/Mw_ItemDefinition.h"
+#include "Items/Component/Mw_ItemComponent.h"
 #include "Items/Instances/Mw_ConsumableItemInstance.h"
 #include "Items/Instances/Mw_EquippableItemInstance.h"
 #include "Items/Instances/Mw_ItemInstance.h"
@@ -22,46 +23,11 @@ UMw_InventoryComponent::UMw_InventoryComponent()
 	
 }
 
-void UMw_InventoryComponent::AddNewItem(UMw_ItemInstance* InItem, int32 InStackCount,int32 Remainder)
+bool UMw_InventoryComponent::TryAddItem(UMw_ItemComponent* InItemComponent)
 {
-	if (!InItem) return;
-	//if (InStackCount <= 0) return;
-	UMw_ItemInstance* NewInstance = DuplicateItemInstance(InItem, InStackCount); // 需要实现深拷贝
-	NewInstance->SetTotalStackCount(InStackCount);
-	
-	ItemInventorys.Add(NewInstance);
-	
-	// 物品广播
-	OnInventoryItemAdded.Broadcast(NewInstance);
-	
-	if (Remainder == 0)
+	if (!InItemComponent)
 	{
-		// 全部拾取
-	}
-	/*else if ()
-	{
-		
-	}*/
-	
-}
-
-void UMw_InventoryComponent::AddStacksToItem(UMw_ItemInstance* InItem, int32 InStackCount, int32 Remainder)
-{
-	const FGameplayTag& ItemTypeTag = IsValid(InItem) ? InItem->GetItemTypeTag() : FGameplayTag::EmptyTag;
-	
-	UMw_ItemInstance* Item = FindFirstItemByType(ItemTypeTag);
-	if (!IsValid(Item)) return;
-	
-	Item->SetTotalStackCount(Item->GetTotalStackCount() + InStackCount);
-}
-
-bool UMw_InventoryComponent::TryAddItem(UMw_ItemInstance* InItemInstance, int32 InStackCount)
-{
-	
-	if (!InItemInstance || InStackCount <= 0)
-	{
-		Debug::Print(TEXT("InItemInstance is not valid. "),EMwLogType::LogMwTemp,ELogVerbosity::Error,true);
-		
+		Debug::Print(TEXT("InItemComponent is not valid. "),EMwLogType::LogMwTemp,ELogVerbosity::Error,true);
 		return false;
 	}
 	if (!InventoryWidget.IsValid())
@@ -69,12 +35,11 @@ bool UMw_InventoryComponent::TryAddItem(UMw_ItemInstance* InItemInstance, int32 
 		InventoryWidget = Cast<UMw_UserWidget_InventoryBase>(UMw_BFL_Widget::GetMwHUD(GetWorld())->GetInventoryWidget());
 	}
 	
-	FInv_SlotAvailabilityResult Result = InventoryWidget->HasRoomForItem(InItemInstance);
+	FInv_SlotAvailabilityResult Result = InventoryWidget->HasRoomForItem(InItemComponent);
 	
-	UMw_ItemInstance* FoundItemInstance = FindFirstItemByType(InItemInstance->GetItemTypeTag());
+	UMw_ItemInstance* FoundItemInstance = FindFirstItemByType(InItemComponent->GetItemInstance()->GetItemTypeTag());
 	
 	Result.Item = FoundItemInstance;
-	
 	
 	if (Result.TotalRoomToFill == 0)
 	{
@@ -85,14 +50,14 @@ bool UMw_InventoryComponent::TryAddItem(UMw_ItemInstance* InItemInstance, int32 
 	
 	if (Result.Item.IsValid() && Result.bStackable)
 	{
-		// 物品已经存在背包中，增加堆叠
-		AddStacksToItem(InItemInstance,Result.TotalRoomToFill,Result.Remainder);
+		// 向库存中已存在的物品添加堆叠。我们只需更新堆叠数量，而不是创建此类型的全新物品
+		AddStacksToItem(InItemComponent,Result.TotalRoomToFill,Result.Remainder);
 		//return true;
 	}
 	else if (Result.TotalRoomToFill > 0)
 	{
-		 // 该物品类型在库存中并不存在，创建新物品并更新所有槽位
-		AddNewItem(InItemInstance, Result.bStackable ? Result.TotalRoomToFill : 0,Result.Remainder);//Result.bStackable ? Result.TotalRoomToFill : 0);
+		// 该物品类型在库存中并不存在，创建新物品并更新所有槽位
+		AddNewItem(InItemComponent, Result.bStackable ? Result.TotalRoomToFill : 0,Result.Remainder);//Result.bStackable ? Result.TotalRoomToFill : 0);
 		//return true;
 	}
 	else
@@ -102,7 +67,12 @@ bool UMw_InventoryComponent::TryAddItem(UMw_ItemInstance* InItemInstance, int32 
 	
 	return true;
 	
-	/*// 如果物品可堆叠，先尝试合并
+}
+
+/*
+bool UMw_InventoryComponent::TryAddItem(UMw_ItemInstance* InItemInstance, int32 InStackCount)
+{
+	/#1#/ 如果物品可堆叠，先尝试合并
 	if (InItemInstance->GetGameplayInfo().IsStackable)
 	{
 		// 查找可合并的现有实例（相同定义且动态属性一致）
@@ -120,7 +90,59 @@ bool UMw_InventoryComponent::TryAddItem(UMw_ItemInstance* InItemInstance, int32 
 		return false;
 	}
 
-	return AddNewItemInstance(InItemInstance, InStackCount);*/
+	return AddNewItemInstance(InItemInstance, InStackCount);#1#
+}
+*/
+
+void UMw_InventoryComponent::AddNewItem(UMw_ItemComponent* InItemComponent, int32 InStackCount,int32 Remainder)
+{
+	if (!InItemComponent) return;
+	//if (InStackCount <= 0) return;
+	UMw_ItemInstance* NewInstance = DuplicateItemInstance(InItemComponent->GetItemInstance(), InStackCount); // 需要实现深拷贝
+
+	ItemInventorys.Add(NewInstance);
+	
+	// 物品广播
+	OnInventoryItemAdded.Broadcast(NewInstance);
+	
+	// 是否有剩余
+	if (Remainder == 0)
+	{
+		// 全部拾取
+		InItemComponent->PickedUp();
+	}
+	else if (InItemComponent && InItemComponent->GetItemInstance())
+	{
+		// 物品组件是直接设置
+		InItemComponent->SetQuantity(Remainder);
+		// 物品实例通过减少来变动
+		InItemComponent->GetItemInstance()->RemoveFromStackCount(InStackCount);
+	}
+	
+}
+
+void UMw_InventoryComponent::AddStacksToItem(UMw_ItemComponent* InItemComponent, int32 InStackCount, int32 Remainder)
+{
+	// TODO:: 这个不一定适合我，我应该要更加完善的判断
+	const FGameplayTag& ItemTypeTag = IsValid(InItemComponent) ? InItemComponent->GetItemInstance()->GetItemTypeTag() : FGameplayTag::EmptyTag;
+	
+	UMw_ItemInstance* SlotItemInstance = FindFirstItemByType(ItemTypeTag);
+	
+	if (!IsValid(SlotItemInstance)) return;
+	
+	SlotItemInstance->AddToStackCount(InStackCount);
+	
+	if (Remainder == 0)
+	{
+		InItemComponent->PickedUp();
+	}
+	else if (InItemComponent && InItemComponent->GetItemInstance())
+	{
+		// 物品组件是直接设置
+		InItemComponent->SetQuantity(Remainder);
+		// 物品实例通过减少来变动
+		InItemComponent->GetItemInstance()->RemoveFromStackCount(InStackCount);
+	}
 }
 
 bool UMw_InventoryComponent::RemoveItemInventory(UMw_ItemInstance* InItemInstance, int32 InStackCount)
@@ -194,7 +216,7 @@ UMw_ItemInstance* UMw_InventoryComponent::FindStackableInstance(const UMw_ItemIn
 		}
 
 		// 检查是否还有空间可堆叠
-		if (Existing->StackCount < Existing->GetItemMaxStackSize())
+		if (Existing->GetStackCount() < Existing->GetItemMaxStackSize())
 			return Existing;
 	}
 	return nullptr;
@@ -204,7 +226,7 @@ bool UMw_InventoryComponent::MergeToExistingStack(UMw_ItemInstance* Existing, UM
 	int32 InStackCount)
 {
 	int32 MaxStack = Existing->GetItemMaxStackSize();
-	int32 CurrentCount = Existing->StackCount;
+	int32 CurrentCount = Existing->GetStackCount();
 	int32 Total = CurrentCount + InStackCount;
 
 	if (Total <= MaxStack)
@@ -287,7 +309,7 @@ UMw_ItemInstance* UMw_InventoryComponent::DuplicateItemInstance(UMw_ItemInstance
 	// 使用 NewObject 创建新实例，然后复制必要属性
 	UMw_ItemInstance* NewInstance = NewObject<UMw_ItemInstance>(this, Original->GetClass());
 	NewInstance->ItemDefinition = Original->ItemDefinition;
-	NewInstance->StackCount = NewStackCount;
+	NewInstance->AddToStackCount(NewStackCount) ;
 	// 复制动态属性（如 Attributes）
 	if (UMw_EquippableItemInstance* OriginalEquip = Cast<UMw_EquippableItemInstance>(Original))
 	{

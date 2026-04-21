@@ -8,6 +8,7 @@
 //#include "UI/MwWidget/Inventory/Types/Mw_InventoryGridTypes.h"
 #include "Mw_UserWidget_InventoryGrid.generated.h"
 
+class UMw_ItemComponent;
 class UMw_UserWidget_InventorySlottedItem;
 class UMw_ItemInstance;
 class UCanvasPanel;
@@ -26,8 +27,13 @@ public:
 	virtual void NativeOnInitialized() override;
 	
 	FGameplayTag GetItemCategory() const {return GridItemType;}
-	
-	FInv_SlotAvailabilityResult HasRoomForItem(const UMw_ItemInstance* InItemInstance) ;
+
+	/**
+	 * 外部调用的函数：有容纳某物的空间？
+	 * @param InItemComponent UMw_ItemComponent
+	 * @return 
+	 */
+	FInv_SlotAvailabilityResult HasRoomForItem(const UMw_ItemComponent* InItemComponent) ;
 
 	/**
 	 *  暂时作废
@@ -39,6 +45,26 @@ public:
 private:
 	
 	void ConstructGrid();
+	
+	/*
+	/**
+	 * 外部调用的函数：有容纳某物的空间？
+	 * @param InItemComponent UMw_ItemComponent
+	 * @param StackAmountOverride 堆叠数量覆盖
+	 * @return 
+	 #1#
+	FInv_SlotAvailabilityResult HasRoomForItem(const UMw_ItemComponent* InItemComponent, const int32 StackAmountOverride = -1) ;
+	*/
+	
+	
+	/**
+	 * 外部调用的函数：有容纳某物的空间？
+	 * @param InItemInstance UMw_ItemInstance
+	 * @param StackAmountOverride 堆叠数量覆盖
+	 * @return 
+	 */
+	FInv_SlotAvailabilityResult HasRoomForItem(const UMw_ItemInstance* InItemInstance, const int32 StackAmountOverride = -1) ;
+	
 	UFUNCTION()
 	void AddedItem(UMw_ItemInstance* InItemInStance);
 

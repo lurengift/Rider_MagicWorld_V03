@@ -8,6 +8,7 @@
 #include "Mw_InventoryComponent.generated.h"
 
 
+class UMw_ItemComponent;
 class UMw_UserWidget_InventoryBase;
 class UMw_ItemInstance;
 
@@ -23,21 +24,42 @@ class MAGICWORLD_V03_API UMw_InventoryComponent : public UActorComponent
 public:
 	// Sets default values for this component's properties
 	UMw_InventoryComponent();
-	
-	
-	//
-	void AddNewItem(UMw_ItemInstance* InItem, int32 InStackCount,int32 Remainder);
-	
-	void AddStacksToItem(UMw_ItemInstance* InItem, int32 InStackCount,int32 Remainder);
 
 	/**
+	 * 根据物品组件来进行尝试添加库存
+	 * @param InItemComponent 
+	 * @return 
+	 */
+	UFUNCTION(BlueprintCallable,Category="MagicWorld|ItemInventory")
+	bool TryAddItem(UMw_ItemComponent* InItemComponent);
+
+	/**
+	 * 新增库存
+	 * @param InItemComponent 
+	 * @param InStackCount 增加数量
+	 * @param Remainder 剩余数量
+	 */
+	void AddNewItem(UMw_ItemComponent* InItemComponent, int32 InStackCount,int32 Remainder);
+
+	/**
+	 * 为物品添加堆叠
+	 * @param InItemComponent 
+	 * @param InStackCount 增加数量
+	 * @param Remainder 剩余数量
+	 */
+	void AddStacksToItem(UMw_ItemComponent* InItemComponent, int32 InStackCount,int32 Remainder);
+
+	
+	
+	/*/**
 	 * 尝试添加物品
 	 * @param InItemInstance 最开始的物品实例
 	 * @param InStackCount 物品最开始的数量
 	 * @return 
-	 */
+	 #1#
 	UFUNCTION(BlueprintCallable,Category="MagicWorld|ItemInventory")
 	bool TryAddItem(UMw_ItemInstance* InItemInstance, int32 InStackCount = 1);
+	*/
 	
 	UFUNCTION(BlueprintCallable,Category="MagicWorld|ItemInventory")
 	bool RemoveItemInventory(UMw_ItemInstance* InItemInstance, int32 InStackCount = 1);

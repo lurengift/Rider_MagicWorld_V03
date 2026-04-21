@@ -25,25 +25,31 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly,Category ="MagicWorld|ItemInstance")
 	TObjectPtr<UMw_ItemDefinition> ItemDefinition;
 	
-	// 数量
-	UPROPERTY(EditAnywhere, BlueprintReadOnly,Category ="MagicWorld|ItemComponent")
-	float Quantity = 1.f;
-	
 	UFUNCTION(BlueprintCallable,Category ="MagicWorld|ItemComponent")
 	bool CreateItem(UStaticMeshComponent* InStaticMeshComponent);
 	
 	UFUNCTION(BlueprintCallable,Category ="MagicWorld|ItemComponent")
 	void InitializeSpawn(UMw_ItemInstance* InItemInstance);
-	
+	/**
+	 * 是否允许堆叠
+	 * @return 
+	 */
+	bool IsStackable() const;
 	// BlueprintImplementable 蓝图可以覆盖C++中的实现
 	UFUNCTION(BlueprintCallable,BlueprintImplementableEvent,Category ="MagicWorld|ItemComponent")
 	void OnInitialized();
 	void OnInitializedModule(UStaticMeshComponent* InStaticMeshComponent);
 	FString GetPickUpMessage() const {return PickUpMessage;}
 	
+	int32 GetQuantity() const {return Quantity;}
+	void SetQuantity(int32 InQuantity) {Quantity = InQuantity;}
+	
 	UMw_ItemInstance* GetItemInstance() const {return ItemInstance;}
 	
-	void PickedUp(AActor* PickupUser);
+	void InteractPickedUp(AActor* PickedUpActor,UMw_ItemComponent* InItemComponent);
+	
+	void PickedUp();
+	
 	
 protected:
 	
@@ -55,6 +61,10 @@ private:
 	UPROPERTY(VisibleAnywhere,Category ="MagicWorld|ItemComponent")
 	TObjectPtr<UMw_ItemInstance> ItemInstance;
 
+	// 数量
+	UPROPERTY(EditAnywhere,Category ="MagicWorld|ItemComponent")
+	float Quantity = 1.f;
+	
 	UPROPERTY(EditAnywhere,Category ="MagicWorld|ItemComponent")
 	FString PickUpMessage;
 

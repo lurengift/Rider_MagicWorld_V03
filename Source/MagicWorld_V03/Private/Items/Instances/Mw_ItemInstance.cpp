@@ -7,6 +7,11 @@
 #include "Items/Assets/Mw_ItemDefinition.h"
 
 
+int32 UMw_ItemInstance::GetStackCount() const
+{
+	return StackCount;
+}
+
 bool UMw_ItemInstance::InitializedItem(UMw_ItemDefinition* InItemDefinition, int32 InStackCount)
 {
 	if (!InItemDefinition)

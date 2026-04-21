@@ -8,17 +8,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3cbf72fb-cffc-4ca2-b994-c43973e35169" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.MagicWorld_V03.dir/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.MagicWorld_V03.dir/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.MagicWorld_V03/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.MagicWorld_V03/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.MagicWorld_V03/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEditor.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEditor.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultGame.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultGame.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultInput.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultInput.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MagicWorld_V03.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/MagicWorld_V03.uproject" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/MagicWorld_V03/MagicWorld_V03.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MagicWorld_V03/MagicWorld_V03.Build.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MagicWorld_V03/Private/Component/Inventory/Mw_InventoryComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MagicWorld_V03/Private/Component/Inventory/Mw_InventoryComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MagicWorld_V03/Private/Items/Component/Mw_ItemComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MagicWorld_V03/Private/Items/Component/Mw_ItemComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MagicWorld_V03/Private/Items/Instances/Mw_ItemInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MagicWorld_V03/Private/Items/Instances/Mw_ItemInstance.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MagicWorld_V03/Private/Player/Mw_PlayerController_Base.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MagicWorld_V03/Private/Player/Mw_PlayerController_Base.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MagicWorld_V03/Private/UI/MwWidget/Inventory/Spatial/Mw_UserWidget_InventoryGrid.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MagicWorld_V03/Private/UI/MwWidget/Inventory/Spatial/Mw_UserWidget_InventoryGrid.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MagicWorld_V03/Private/UI/MwWidget/Inventory/Spatial/Mw_UserWidget_InventorySpatial.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MagicWorld_V03/Private/UI/MwWidget/Inventory/Spatial/Mw_UserWidget_InventorySpatial.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MagicWorld_V03/Public/Component/Inventory/Mw_InventoryComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MagicWorld_V03/Public/Component/Inventory/Mw_InventoryComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MagicWorld_V03/Public/Items/Component/Mw_ItemComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MagicWorld_V03/Public/Items/Component/Mw_ItemComponent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MagicWorld_V03/Public/Items/Instances/Mw_ItemInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MagicWorld_V03/Public/Items/Instances/Mw_ItemInstance.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MagicWorld_V03/Public/UI/MwWidget/Inventory/Mw_UserWidget_InventoryBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MagicWorld_V03/Public/UI/MwWidget/Inventory/Mw_UserWidget_InventoryBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MagicWorld_V03/Public/UI/MwWidget/Inventory/Spatial/Mw_UserWidget_InventoryGrid.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MagicWorld_V03/Public/UI/MwWidget/Inventory/Spatial/Mw_UserWidget_InventoryGrid.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/MagicWorld_V03/Public/UI/MwWidget/Inventory/Spatial/Mw_UserWidget_InventorySpatial.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/MagicWorld_V03/Public/UI/MwWidget/Inventory/Spatial/Mw_UserWidget_InventorySpatial.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,9 +51,11 @@
   }
 }]]></component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="cidr-memory-view://6" root0="FORCE_HIGHLIGHTING" />
+    <setting file="cidr-memory-view://12" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://D:/UE_XiangMu/MagicWorld_V03/Source/MagicWorld_V03/MagicWorld_V03.Build.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../XuHuan/UE_5.7/Engine/Source/Runtime/Core/Private/Logging/StructuredLog.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../XuHuan/UE_5.7/Engine/Source/Runtime/Core/Private/Windows/WindowsErrorOutputDevice.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../XuHuan/UE_5.7/Engine/Source/Runtime/Core/Public/Misc/MTAccessDetector.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo"><![CDATA[{
@@ -168,7 +171,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1776743925339</updated>
-      <workItem from="1776743939084" duration="4543000" />
+      <workItem from="1776743939084" duration="17262000" />
     </task>
     <task id="LOCAL-00001" summary="提交">
       <option name="closed" value="true" />
@@ -194,7 +197,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776745506085</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="项目重新可以正常运行了">
+      <option name="closed" value="true" />
+      <created>1776750788435</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1776750788435</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -249,7 +260,8 @@
     <MESSAGE value="提交" />
     <MESSAGE value="第一次提交" />
     <MESSAGE value="补全" />
-    <option name="LAST_COMMIT_MESSAGE" value="补全" />
+    <MESSAGE value="项目重新可以正常运行了" />
+    <option name="LAST_COMMIT_MESSAGE" value="项目重新可以正常运行了" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

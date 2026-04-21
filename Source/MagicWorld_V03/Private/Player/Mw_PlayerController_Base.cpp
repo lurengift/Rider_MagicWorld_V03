@@ -207,6 +207,6 @@ void AMw_PlayerController_Base::Input_Interact(const FInputActionValue& Value)
 	UMw_ItemComponent* ItemComponent =  ThisActor->FindComponentByClass<UMw_ItemComponent>();
 	if (ItemComponent)
 	{
-		ItemComponent->PickedUp(GetPawn());   // 拾取
+		ItemComponent->InteractPickedUp(GetPawn(),ItemComponent);   // 拾取
 	}
 }

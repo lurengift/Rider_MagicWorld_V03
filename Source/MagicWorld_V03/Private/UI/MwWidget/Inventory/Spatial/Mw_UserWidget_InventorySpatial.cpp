@@ -9,6 +9,7 @@
 #include "Components/WidgetSwitcher.h"
 #include "FunctionLibrary/Mw_BFL_Widget.h"
 #include "Items/Mw_ItemTags.h"
+#include "Items/Component/Mw_ItemComponent.h"
 #include "Items/Instances/Mw_ItemInstance.h"
 #include "UI/MwWidget/Inventory/Spatial/Mw_UserWidget_InventoryGrid.h"
 #include "UI/WidgetController/Mw_WidgetController_Inventory.h"
@@ -26,24 +27,24 @@ void UMw_UserWidget_InventorySpatial::NativeOnInitialized()
 	ShowEquippable();
 }
 
-FInv_SlotAvailabilityResult UMw_UserWidget_InventorySpatial::HasRoomForItem(UMw_ItemInstance* Item) const
+FInv_SlotAvailabilityResult UMw_UserWidget_InventorySpatial::HasRoomForItem(UMw_ItemComponent* InItemComponent) const
 {
-	if (!Item) return FInv_SlotAvailabilityResult();
+	if (!InItemComponent) return FInv_SlotAvailabilityResult();
 
-	FGameplayTag ItemType = Item->GetItemTypeTag();
+	FGameplayTag ItemType = InItemComponent->GetItemInstance()->GetItemTypeTag();
 	// MatchesTag(Tag)：检查当前标签是否与指定标签相同或是其子标签（层级匹配）。
 	// MatchesTagExact(Tag)：检查当前标签是否与指定标签完全相同（不考虑层级）。
 	if (ItemType.MatchesTagExact(Mw_ItemTags::Item_Type_Equippable))
 	{
-		return Grid_Equippable->HasRoomForItem(Item);
+		return Grid_Equippable->HasRoomForItem(InItemComponent);
 	}
 	else if (ItemType.MatchesTagExact(Mw_ItemTags::Item_Type_Consumable))
 	{
-		return Grid_Consumable->HasRoomForItem(Item);
+		return Grid_Consumable->HasRoomForItem(InItemComponent);
 	}
 	else if (ItemType.MatchesTagExact(Mw_ItemTags::Item_Type_Craftable))
 	{
-		return Grid_Craftable->HasRoomForItem(Item);
+		return Grid_Craftable->HasRoomForItem(InItemComponent);
 	}
 	else
 	{

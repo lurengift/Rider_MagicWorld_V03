@@ -7,7 +7,7 @@
 #include "UI/MwWidget/Inventory/Types/Mw_InventoryGridTypes.h"
 #include "Mw_UserWidget_InventoryBase.generated.h"
 
-class UMw_ItemInstance;
+class UMw_ItemComponent;
 
 /**
  * 库存控件基类
@@ -20,9 +20,9 @@ class MAGICWORLD_V03_API UMw_UserWidget_InventoryBase : public UMw_UserWidget_Ba
 public:
 	/**
 	 * (空间/容器)有容纳某物的空间/余地
-	 * @param Item UMwObject_ItemInventory
+	 * @param InItemComponent UMw_ItemComponent
 	 * @return FInv_SlotAvailabilityResult
 	 */
-	virtual FInv_SlotAvailabilityResult HasRoomForItem(UMw_ItemInstance* Item) const { return FInv_SlotAvailabilityResult(); };
+	virtual FInv_SlotAvailabilityResult HasRoomForItem(UMw_ItemComponent* InItemComponent) const { return FInv_SlotAvailabilityResult(); };
 	
 };

@@ -14,7 +14,7 @@
 #include "UI/MwWidget/Inventory/Types/Mw_InventoryGridTypes.h"
 #include "UI/WidgetController/Mw_WidgetController_Inventory.h"
 #include "Components/Image.h"
-
+#include "Items/Component/Mw_ItemComponent.h"
 
 
 void UMw_UserWidget_InventoryGrid::NativeOnInitialized()
@@ -55,9 +55,18 @@ void UMw_UserWidget_InventoryGrid::ConstructGrid()
 }
 
 
+FInv_SlotAvailabilityResult UMw_UserWidget_InventoryGrid::HasRoomForItem(const UMw_ItemComponent* InItemComponent)
+{
+	return HasRoomForItem(InItemComponent->GetItemInstance());
+}
+/*FInv_SlotAvailabilityResult UMw_UserWidget_InventoryGrid::HasRoomForItem(const UMw_ItemComponent* InItemComponent,
+	const int32 StackAmountOverride)
+{
+	return HasRoomForItem(InItemComponent->GetItemInstance(),StackAmountOverride);
+}*/
 
 
-FInv_SlotAvailabilityResult UMw_UserWidget_InventoryGrid::HasRoomForItem(const UMw_ItemInstance* InItemInstance)
+FInv_SlotAvailabilityResult UMw_UserWidget_InventoryGrid::HasRoomForItem(const UMw_ItemInstance* InItemInstance,const int32 StackAmountOverride)
 {
 	//if (!InItemInstance) return FInv_SlotAvailabilityResult();
 	
@@ -65,9 +74,15 @@ FInv_SlotAvailabilityResult UMw_UserWidget_InventoryGrid::HasRoomForItem(const U
 	// 物品是否可以堆叠
 	Result.bStackable = InItemInstance->GetItemIsStackable();
 	// 需要填充的数量
-	int32 AmountToFill = Result.bStackable ? InItemInstance->StackCount : 1;
+	int32 AmountToFill = Result.bStackable ? InItemInstance->GetStackCount() : 1;
 	// 最大允许填充的数量
 	const int32 MaxStackSize = Result.bStackable ? InItemInstance->GetItemMaxStackSize() : 1;
+	
+	// 如果可以堆叠，覆盖数量不等于1
+	if (StackAmountOverride != -1 && Result.bStackable)
+	{
+		AmountToFill = StackAmountOverride;
+	}
 	
 	// 已检查的索引
 	TSet<int32> CheckedIndices;  // 这里不用数组是因为数组可以存储相同的数组，而TSet只能存储不同的。

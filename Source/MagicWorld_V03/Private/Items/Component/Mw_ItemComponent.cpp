@@ -58,6 +58,12 @@ void UMw_ItemComponent::InitializeSpawn(UMw_ItemInstance* InItemInstance)
 	OnInitialized();
 }
 
+bool UMw_ItemComponent::IsStackable() const
+{
+	if (!ItemInstance) return false;
+	return ItemInstance->GetItemIsStackable();
+}
+
 void UMw_ItemComponent::OnInitializedModule(UStaticMeshComponent* InStaticMeshComponent)
 {
 	if (!ItemInstance)
@@ -112,10 +118,24 @@ void UMw_ItemComponent::OnInitializedModule(UStaticMeshComponent* InStaticMeshCo
 	);
 }
 
-void UMw_ItemComponent::PickedUp(AActor* PickupUser)
+void UMw_ItemComponent::InteractPickedUp(AActor* PickedUpActor,UMw_ItemComponent* InItemComponent)
+{
+	//添加到库存
+	if (UMw_InventoryComponent* Inv = PickedUpActor->FindComponentByClass<UMw_InventoryComponent>())
+	{
+		bool InvValid =Inv->TryAddItem(InItemComponent);
+		if (!InvValid)
+		{
+			//Inv->NoRoomInInventory.Broadcast();
+		}
+	}
+}
+
+void UMw_ItemComponent::PickedUp()
 {
 	OnPickedUp();
 	
+	/*
 	if (!PickupUser) return;
 	// 1. 调用物品实例的拾取接口（执行额外效果，如音效、成就等）
 	bool bContinue = true;
@@ -145,7 +165,8 @@ void UMw_ItemComponent::PickedUp(AActor* PickupUser)
 		}
 	
 		
-	}
+	}*/
+	
 	GetOwner()->Destroy();
 }
 

@@ -23,7 +23,7 @@ public:
 	 */
 	virtual void NativeOnInitialized() override;
 	
-	virtual FInv_SlotAvailabilityResult HasRoomForItem(UMw_ItemInstance* Item) const override;
+	virtual FInv_SlotAvailabilityResult HasRoomForItem(UMw_ItemComponent* InItemComponent) const override;
 	
 private:
 	

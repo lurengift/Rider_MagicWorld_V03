@@ -26,17 +26,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
 	TObjectPtr<UMw_ItemDefinition> ItemDefinition;
 	
-	// 堆叠大小（数量个数）
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
-	int32 StackCount;
+
 
 public:
 	
-	UPROPERTY(BlueprintAssignable, Category = "Item|Events")
+	UPROPERTY(BlueprintAssignable, Category = "MagicWorld|Mw_ItemInstance")
 	FOnItemStackCountChangeDelegate OnItemStackCountChange;
 	
-	UPROPERTY(BlueprintAssignable, Category = "Item|Events")
+	UPROPERTY(BlueprintAssignable, Category = "MagicWorld|Mw_ItemInstance")
 	FOnItemStackDepleted OnItemStackDepleted;
+	
+	UFUNCTION(BlueprintCallable, Category = "MagicWorld|Mw_ItemInstance")
+	int32 GetStackCount() const;
 	
 	/**
 	 * 初始化物品数据
@@ -63,8 +64,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Item")
 	virtual bool RemoveFromStackCount(int32 AmountToRemove);
 	
-	int32 GetTotalStackCount() const{return TotalStackCount;}
-	void SetTotalStackCount(int32 InCount) {TotalStackCount = InCount;}
+
 #pragma region	一些辅助类的函数，可以供外部使用
 
 	/**
@@ -170,9 +170,12 @@ public:
 	
 #pragma endregion
 
+protected:
+	// 堆叠大小（数量个数）
+	UPROPERTY(VisibleAnywhere, Category = "Item")
+	int32 StackCount;
+	
 private:
 	
-	// 总堆叠数
-	int32 TotalStackCount = 0;
 
 };
