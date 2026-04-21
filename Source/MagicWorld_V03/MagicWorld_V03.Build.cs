@@ -19,7 +19,7 @@ public class MagicWorld_V03 : ModuleRules
 			"GameplayAbilities",
 			"GameplayTasks",
 			"Slate",
-			"SlateCore",
+			"SlateCore", "UMG",
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
